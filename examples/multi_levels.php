@@ -4,31 +4,32 @@ $text = $_REQUEST['text'];
 
 $input = getInput($text);
 
-if($input['level'] == 0){
-  //Breaking news, Football, Athletics, Gossip
-  $reply = self::getMainMenu();
-  echo "CON ".$reply;
-  exit;
-}elseif($input['level'] == 1){
-  //get the input form the previous step
-  if($input['latest_message'] == 1){
-      $reply = getSafaricomMenu();
-  }elseif($input['latest_message'] == 2){
-    //MPESA menu
+switch ($input['level']) {
+  case 0:
+     $reply = getMainMenu();
+    break;
+  case 1:
+      $reply =levelOneProcess($input);
+      break;
+  case 2:
+      $reply = levelTwoProcess($input);
+      break;
 
-    $reply = getMpesaMenu();
-    print_r($reply);
-    exit;
-  }else{
-    $reply = getErrorMessage();
-    echo "END ".$reply;
-   exit;
-  }
-
+  default:
+      $reply = getMainMenu();
+    break;
+}
 echo "CON ".$reply;
+exit;
 
-}elseif($input['level'] == 2){
-  //get the input form the previous step
+
+//User dials the code and is requested to enter the drug verification
+//code
+
+//step 2 the code is compared to valid code and if valid gets valid Message
+
+//end at this
+function levelTwoProcess($input){
   if($input['exploded_text'][0] == 1){
     //Safaricom Menu level 2
   }elseif($input['exploded_text'][0] == 2){
@@ -41,17 +42,26 @@ echo "CON ".$reply;
    exit;
   }
 
-echo "CON ".$reply;
+return $reply;
+}
+function levelOneProcess($input){
+  //get the input form the previous step
+  if($input['latest_message'] == 1){
+      $reply = getSafaricomMenu();
+  }elseif($input['latest_message'] == 2){
+    //MPESA menu
+
+    $reply = getMpesaMenu();
+
+  }else{
+    $reply = getErrorMessage();
+    echo "END ".$reply;
+   exit;
+  }
+
+return $reply;
 
 }
-
-
-//User dials the code and is requested to enter the drug verification
-//code
-
-//step 2 the code is compared to valid code and if valid gets valid Message
-
-//end at this
 
 function getMpesaLevel2($latest_message){
 
