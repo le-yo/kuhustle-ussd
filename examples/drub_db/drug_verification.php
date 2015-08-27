@@ -1,6 +1,5 @@
 <?php
 
-
 $text = $_REQUEST['text'];
 
 $level = getLevel($text);
